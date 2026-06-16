@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigQuery Release Notes Dashboard</title>
+    <meta name="description" content="Stay up to date with the latest BigQuery release notes and features, search updates, and share them on Twitter.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    <div class="glow-bg-secondary"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i data-lucide="database"></i>
+                </div>
+                <div>
+                    <h1 id="app-title">BigQuery Release Notes</h1>
+                    <p class="subtitle">Real-time updates, features, and fixes directly from Google Cloud</p>
+                </div>
+            </div>
+            <button id="btn-refresh" class="btn btn-primary" title="Refresh release notes">
+                <i data-lucide="refresh-cw" class="icon-spin-target"></i>
+                <span>Refresh Feed</span>
+            </button>
+        </header>
+
+        <!-- Controls Area -->
+        <div class="controls-card">
+            <!-- Search -->
+            <div class="search-wrapper">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="search-input" placeholder="Search release notes by keyword (e.g., 'JSON', 'performance', 'Gemini')..." aria-label="Search release notes">
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-wrapper">
+                <span class="filter-label">Filter by type:</span>
+                <div class="filter-chips">
+                    <button class="chip active" data-filter="all" id="filter-all">All Updates</button>
+                    <button class="chip" data-filter="feature" id="filter-feature">
+                        <span class="dot dot-feature"></span> Features
+                    </button>
+                    <button class="chip" data-filter="change" id="filter-change">
+                        <span class="dot dot-change"></span> Changes
+                    </button>
+                    <button class="chip" data-filter="deprecation" id="filter-deprecation">
+                        <span class="dot dot-deprecation"></span> Deprecations
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes Grid / Container -->
+        <main class="content-section">
+            <!-- Loading Indicator -->
+            <div id="loading-spinner" class="loading-container">
+                <div class="spinner-ring">
+                    <div></div><div></div><div></div><div></div>
+                </div>
+                <p>Fetching latest release notes...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-card" class="error-container hidden">
+                <i data-lucide="alert-triangle" class="error-icon"></i>
+                <h2>Failed to fetch release notes</h2>
+                <p id="error-message">Something went wrong while connecting to the feed.</p>
+                <button id="btn-retry" class="btn btn-secondary">Try Again</button>
+            </div>
+
+            <!-- Notes List -->
+            <div id="notes-list" class="notes-grid hidden">
+                <!-- JavaScript will dynamically render notes here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-container hidden">
+                <i data-lucide="search-code" class="empty-icon"></i>
+                <h3>No release notes match your query</h3>
+                <p>Try searching for a different keyword or changing your type filter.</p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>&copy; 2026 BigQuery Release Notes Dashboard. Built with Flask and Vanilla CSS/JS.</p>
+        </footer>
+    </div>
+
+    <!-- Twitter Share Modal -->
+    <div id="tweet-modal" class="modal-backdrop hidden" aria-hidden="true" role="dialog">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i data-lucide="twitter" class="twitter-color"></i> Share Update on X (Twitter)</h3>
+                <button id="btn-close-modal" class="btn-close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-info">Preview and customize your post before sharing it on Twitter:</p>
+                
+                <!-- Card Preview -->
+                <div class="tweet-preview-card">
+                    <div class="preview-header">
+                        <div class="avatar">BQ</div>
+                        <div class="user-info">
+                            <span class="name">BigQuery Update</span>
+                            <span class="handle">@GoogleCloud</span>
+                        </div>
+                    </div>
+                    <textarea id="tweet-textarea" class="tweet-textarea" rows="5" maxlength="280" placeholder="What would you like to say about this update?"></textarea>
+                    <div class="char-count-wrapper">
+                        <span id="char-counter">0</span> / 280
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-cancel-tweet" class="btn btn-text">Cancel</button>
+                <button id="btn-submit-tweet" class="btn btn-twitter">
+                    <i data-lucide="external-link"></i> Post to Twitter
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Bundle -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
